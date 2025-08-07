@@ -2,17 +2,65 @@
 
 import type { CVData } from "@/app/page"
 import { Badge } from "@/components/ui/badge"
-import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Linkedin, Github, Globe } from 'lucide-react'
 
 interface CVPreviewProps {
   data: CVData
+  language?: 'en' | 'es'
 }
 
-export function CVPreview({ data }: CVPreviewProps) {
+const translations = {
+  en: {
+    yourName: "Your Name",
+    professionalSummary: "PROFESSIONAL SUMMARY",
+    professionalExperience: "PROFESSIONAL EXPERIENCE",
+    present: "Present",
+    technologies: "Technologies:",
+    featuredProjects: "FEATURED PROJECTS",
+    education: "EDUCATION",
+    specialization: "Specialization:",
+    honors: "Honors:",
+    grade: "GPA:",
+    technicalSkills: "TECHNICAL SKILLS",
+    programmingLanguages: "Programming Languages:",
+    frameworksLibraries: "Frameworks & Libraries:",
+    databases: "Databases:",
+    tools: "Tools:",
+    languages: "Languages:",
+    certifications: "CERTIFICATIONS",
+    id: "ID:"
+  },
+  es: {
+    yourName: "Tu Nombre",
+    professionalSummary: "RESUMEN PROFESIONAL",
+    professionalExperience: "EXPERIENCIA PROFESIONAL",
+    present: "Presente",
+    technologies: "Tecnologías:",
+    featuredProjects: "PROYECTOS DESTACADOS",
+    education: "EDUCACIÓN",
+    specialization: "Especialización:",
+    honors: "Honores:",
+    grade: "Nota:",
+    technicalSkills: "HABILIDADES TÉCNICAS",
+    programmingLanguages: "Lenguajes de Programación:",
+    frameworksLibraries: "Frameworks y Librerías:",
+    databases: "Bases de Datos:",
+    tools: "Herramientas:",
+    languages: "Idiomas:",
+    certifications: "CERTIFICACIONES",
+    id: "ID:"
+  }
+}
+
+export function CVPreview({ data, language = 'en' }: CVPreviewProps) {
+  const t = translations[language]
+  
   const formatDate = (dateString: string) => {
     if (!dateString) return ""
     const [year, month] = dateString.split("-")
-    const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+    const monthNames = language === 'en' 
+      ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
     return `${monthNames[Number.parseInt(month) - 1]} ${year}`
   }
 
@@ -20,7 +68,7 @@ export function CVPreview({ data }: CVPreviewProps) {
     <div className="bg-white p-6 text-sm leading-relaxed max-h-[800px] overflow-y-auto border rounded-lg">
       {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.personalInfo.fullName || "Tu Nombre"}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.personalInfo.fullName || t.yourName}</h1>
 
         <div className="flex flex-wrap justify-center gap-4 text-gray-600 text-xs">
           {data.personalInfo.email && (
@@ -68,7 +116,7 @@ export function CVPreview({ data }: CVPreviewProps) {
       {/* Summary */}
       {data.personalInfo.summary && (
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-2 border-b border-gray-300 pb-1">RESUMEN PROFESIONAL</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-2 border-b border-gray-300 pb-1">{t.professionalSummary}</h2>
           <p className="text-gray-700 text-justify">{data.personalInfo.summary}</p>
         </div>
       )}
@@ -77,7 +125,7 @@ export function CVPreview({ data }: CVPreviewProps) {
       {data.experience.length > 0 && (
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">
-            EXPERIENCIA PROFESIONAL
+            {t.professionalExperience}
           </h2>
           {data.experience.map((exp) => (
             <div key={exp.id} className="mb-4">
@@ -88,7 +136,7 @@ export function CVPreview({ data }: CVPreviewProps) {
                 </div>
                 <div className="text-right text-gray-600 text-xs">
                   <p>
-                    {formatDate(exp.startDate)} - {exp.current ? "Presente" : formatDate(exp.endDate)}
+                    {formatDate(exp.startDate)} - {exp.current ? t.present : formatDate(exp.endDate)}
                   </p>
                   {exp.location && <p>{exp.location}</p>}
                 </div>
@@ -108,7 +156,7 @@ export function CVPreview({ data }: CVPreviewProps) {
 
               {exp.technologies.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-2">
-                  <span className="text-xs font-semibold text-gray-600">Tecnologías:</span>
+                  <span className="text-xs font-semibold text-gray-600">{t.technologies}</span>
                   {exp.technologies.map((tech) => (
                     <Badge key={tech} variant="outline" className="text-xs px-1 py-0">
                       {tech}
@@ -124,7 +172,7 @@ export function CVPreview({ data }: CVPreviewProps) {
       {/* Projects */}
       {data.projects.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">PROYECTOS DESTACADOS</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">{t.featuredProjects}</h2>
           {data.projects.map((project) => (
             <div key={project.id} className="mb-4">
               <h3 className="font-bold text-gray-900">{project.name}</h3>
@@ -142,7 +190,7 @@ export function CVPreview({ data }: CVPreviewProps) {
 
               {project.technologies.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-2">
-                  <span className="text-xs font-semibold text-gray-600">Tecnologías:</span>
+                  <span className="text-xs font-semibold text-gray-600">{t.technologies}</span>
                   {project.technologies.map((tech) => (
                     <Badge key={tech} variant="outline" className="text-xs px-1 py-0">
                       {tech}
@@ -163,27 +211,27 @@ export function CVPreview({ data }: CVPreviewProps) {
       {/* Education */}
       {data.education.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">EDUCACIÓN</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">{t.education}</h2>
           {data.education.map((edu) => (
             <div key={edu.id} className="mb-3">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-bold text-gray-900">{edu.degree}</h3>
                   <p className="text-gray-700">{edu.institution}</p>
-                  {edu.field && <p className="text-gray-600 text-xs">Especialización: {edu.field}</p>}
+                  {edu.field && <p className="text-gray-600 text-xs">{t.specialization} {edu.field}</p>}
                 </div>
                 <div className="text-right text-gray-600 text-xs">
                   <p>
                     {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                   </p>
                   {edu.location && <p>{edu.location}</p>}
-                  {edu.gpa && <p>Nota: {edu.gpa}</p>}
+                  {edu.gpa && <p>{t.grade} {edu.gpa}</p>}
                 </div>
               </div>
 
               {edu.honors.length > 0 && (
                 <div className="mt-1">
-                  <span className="text-xs font-semibold text-gray-600">Honores: </span>
+                  <span className="text-xs font-semibold text-gray-600">{t.honors} </span>
                   <span className="text-xs text-gray-700">{edu.honors.join(", ")}</span>
                 </div>
               )}
@@ -194,39 +242,39 @@ export function CVPreview({ data }: CVPreviewProps) {
 
       {/* Skills */}
       <div className="mb-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">HABILIDADES TÉCNICAS</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">{t.technicalSkills}</h2>
 
         {data.skills.technical.length > 0 && (
           <div className="mb-2">
-            <span className="font-semibold text-gray-900 text-xs">Lenguajes de Programación: </span>
+            <span className="font-semibold text-gray-900 text-xs">{t.programmingLanguages} </span>
             <span className="text-gray-700 text-xs">{data.skills.technical.join(", ")}</span>
           </div>
         )}
 
         {data.skills.frameworks.length > 0 && (
           <div className="mb-2">
-            <span className="font-semibold text-gray-900 text-xs">Frameworks y Librerías: </span>
+            <span className="font-semibold text-gray-900 text-xs">{t.frameworksLibraries} </span>
             <span className="text-gray-700 text-xs">{data.skills.frameworks.join(", ")}</span>
           </div>
         )}
 
         {data.skills.databases.length > 0 && (
           <div className="mb-2">
-            <span className="font-semibold text-gray-900 text-xs">Bases de Datos: </span>
+            <span className="font-semibold text-gray-900 text-xs">{t.databases} </span>
             <span className="text-gray-700 text-xs">{data.skills.databases.join(", ")}</span>
           </div>
         )}
 
         {data.skills.tools.length > 0 && (
           <div className="mb-2">
-            <span className="font-semibold text-gray-900 text-xs">Herramientas: </span>
+            <span className="font-semibold text-gray-900 text-xs">{t.tools} </span>
             <span className="text-gray-700 text-xs">{data.skills.tools.join(", ")}</span>
           </div>
         )}
 
         {data.skills.languages.length > 0 && (
           <div className="mb-2">
-            <span className="font-semibold text-gray-900 text-xs">Idiomas: </span>
+            <span className="font-semibold text-gray-900 text-xs">{t.languages} </span>
             <span className="text-gray-700 text-xs">{data.skills.languages.join(", ")}</span>
           </div>
         )}
@@ -235,7 +283,7 @@ export function CVPreview({ data }: CVPreviewProps) {
       {/* Certifications */}
       {data.certifications.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">CERTIFICACIONES</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 border-b border-gray-300 pb-1">{t.certifications}</h2>
           {data.certifications.map((cert) => (
             <div key={cert.id} className="mb-2">
               <div className="flex justify-between items-start">
@@ -245,7 +293,7 @@ export function CVPreview({ data }: CVPreviewProps) {
                 </div>
                 <div className="text-right text-gray-600 text-xs">
                   {cert.date && <p>{formatDate(cert.date)}</p>}
-                  {cert.credentialId && <p>ID: {cert.credentialId}</p>}
+                  {cert.credentialId && <p>{t.id} {cert.credentialId}</p>}
                 </div>
               </div>
             </div>

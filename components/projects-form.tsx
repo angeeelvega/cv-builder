@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, X } from "lucide-react"
+import { Plus, Trash2, X } from 'lucide-react'
 import type { CVData } from "@/app/page"
 
 interface ProjectsFormProps {
@@ -83,10 +83,10 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Proyectos Destacados</h3>
+        <h3 className="text-lg font-semibold">Featured Projects</h3>
         <Button onClick={addProject} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
-          Agregar Proyecto
+          Add Project
         </Button>
       </div>
 
@@ -100,7 +100,7 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label>Nombre del Proyecto *</Label>
+              <Label>Project Name *</Label>
               <Input
                 value={project.name}
                 onChange={(e) => updateProject(project.id, "name", e.target.value)}
@@ -109,11 +109,11 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label>Descripción</Label>
+              <Label>Description</Label>
               <Textarea
                 value={project.description}
                 onChange={(e) => updateProject(project.id, "description", e.target.value)}
-                placeholder="Plataforma de e-commerce completa con sistema de pagos, gestión de inventario y panel de administración..."
+                placeholder="Complete e-commerce platform with payment system, inventory management and admin panel..."
                 rows={3}
               />
             </div>
@@ -138,7 +138,7 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label>Tecnologías Utilizadas</Label>
+              <Label>Technologies Used</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {project.technologies.map((tech) => (
                   <Badge key={tech} variant="secondary" className="flex items-center gap-1">
@@ -173,7 +173,7 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label>Logros y Características Destacadas</Label>
+              <Label>Key Features and Achievements</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {project.highlights.map((highlight) => (
                   <Badge key={highlight} variant="outline" className="flex items-center gap-1">
@@ -186,7 +186,7 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
                 <Input
                   value={newHighlight}
                   onChange={(e) => setNewHighlight(e.target.value)}
-                  placeholder="Aumentó conversiones en 25%, Procesó 10k+ transacciones..."
+                  placeholder="Increased conversions by 25%, Processed 10k+ transactions..."
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault()
@@ -212,7 +212,7 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
 
       {data.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          No hay proyectos agregados. Haz clic en "Agregar Proyecto" para comenzar.
+          No projects added. Click "Add Project" to get started.
         </div>
       )}
     </div>

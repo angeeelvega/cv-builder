@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, X } from "lucide-react"
+import { Plus, Trash2, X } from 'lucide-react'
 import type { CVData } from "@/app/page"
 
 interface ExperienceFormProps {
@@ -89,10 +89,10 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Experiencia Profesional</h3>
+        <h3 className="text-lg font-semibold">Professional Experience</h3>
         <Button onClick={addExperience} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
-          Agregar Experiencia
+          Add Experience
         </Button>
       </div>
 
@@ -107,7 +107,7 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Empresa *</Label>
+                <Label>Company *</Label>
                 <Input
                   value={exp.company}
                   onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
@@ -115,7 +115,7 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Cargo *</Label>
+                <Label>Position *</Label>
                 <Input
                   value={exp.position}
                   onChange={(e) => updateExperience(exp.id, "position", e.target.value)}
@@ -126,15 +126,15 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label>Ubicación</Label>
+                <Label>Location</Label>
                 <Input
                   value={exp.location}
                   onChange={(e) => updateExperience(exp.id, "location", e.target.value)}
-                  placeholder="Madrid, España"
+                  placeholder="San Francisco, CA"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Fecha Inicio</Label>
+                <Label>Start Date</Label>
                 <Input
                   type="month"
                   value={exp.startDate}
@@ -142,7 +142,7 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Fecha Fin</Label>
+                <Label>End Date</Label>
                 <Input
                   type="month"
                   value={exp.endDate}
@@ -163,17 +163,17 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
                   }
                 }}
               />
-              <Label htmlFor={`current-${exp.id}`}>Trabajo actual</Label>
+              <Label htmlFor={`current-${exp.id}`}>Current job</Label>
             </div>
 
             <div className="space-y-2">
-              <Label>Logros y Responsabilidades</Label>
+              <Label>Achievements and Responsibilities</Label>
               {exp.description.map((desc, descIndex) => (
                 <div key={descIndex} className="flex gap-2">
                   <Textarea
                     value={desc}
                     onChange={(e) => updateDescription(exp.id, descIndex, e.target.value)}
-                    placeholder="• Desarrollé una aplicación web que aumentó la eficiencia en un 40%"
+                    placeholder="• Developed a web application that increased efficiency by 40%"
                     rows={2}
                   />
                   {exp.description.length > 1 && (
@@ -184,12 +184,12 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
                 </div>
               ))}
               <Button variant="outline" size="sm" onClick={() => addDescription(exp.id)}>
-                Agregar Logro
+                Add Achievement
               </Button>
             </div>
 
             <div className="space-y-2">
-              <Label>Tecnologías Utilizadas</Label>
+              <Label>Technologies Used</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {exp.technologies.map((tech) => (
                   <Badge key={tech} variant="secondary" className="flex items-center gap-1">
@@ -228,7 +228,7 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
 
       {data.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          No hay experiencias agregadas. Haz clic en "Agregar Experiencia" para comenzar.
+          No experiences added. Click "Add Experience" to get started.
         </div>
       )}
     </div>

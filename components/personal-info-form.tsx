@@ -22,12 +22,12 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="fullName">Nombre Completo *</Label>
+          <Label htmlFor="fullName">Full Name *</Label>
           <Input
             id="fullName"
             value={data.fullName}
             onChange={(e) => handleChange("fullName", e.target.value)}
-            placeholder="Juan Pérez García"
+            placeholder="John Doe"
           />
         </div>
         <div className="space-y-2">
@@ -37,28 +37,28 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
             type="email"
             value={data.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            placeholder="juan.perez@email.com"
+            placeholder="john.doe@email.com"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="phone">Teléfono</Label>
+          <Label htmlFor="phone">Phone</Label>
           <Input
             id="phone"
             value={data.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
-            placeholder="+34 600 123 456"
+            placeholder="+1 (555) 123-4567"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="location">Ubicación</Label>
+          <Label htmlFor="location">Location</Label>
           <Input
             id="location"
             value={data.location}
             onChange={(e) => handleChange("location", e.target.value)}
-            placeholder="Madrid, España"
+            placeholder="New York, NY"
           />
         </div>
       </div>
@@ -70,7 +70,7 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
             id="linkedin"
             value={data.linkedin}
             onChange={(e) => handleChange("linkedin", e.target.value)}
-            placeholder="linkedin.com/in/juanperez"
+            placeholder="linkedin.com/in/johndoe"
           />
         </div>
         <div className="space-y-2">
@@ -79,7 +79,7 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
             id="github"
             value={data.github}
             onChange={(e) => handleChange("github", e.target.value)}
-            placeholder="github.com/juanperez"
+            placeholder="github.com/johndoe"
           />
         </div>
         <div className="space-y-2">
@@ -88,22 +88,22 @@ export function PersonalInfoForm({ data, onChange }: PersonalInfoFormProps) {
             id="portfolio"
             value={data.portfolio}
             onChange={(e) => handleChange("portfolio", e.target.value)}
-            placeholder="juanperez.dev"
+            placeholder="johndoe.dev"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="summary">Resumen Profesional</Label>
+        <Label htmlFor="summary">Professional Summary</Label>
         <Textarea
           id="summary"
           value={data.summary}
           onChange={(e) => handleChange("summary", e.target.value)}
-          placeholder="Desarrollador Full Stack con 5+ años de experiencia en React, Node.js y AWS. Especializado en arquitecturas escalables y metodologías ágiles..."
+          placeholder="Full Stack Developer with 5+ years of experience in React, Node.js and AWS. Specialized in scalable architectures and agile methodologies..."
           rows={4}
         />
         <p className="text-sm text-gray-500">
-          Incluye palabras clave relevantes para tu área (React, Python, AWS, etc.)
+          Include relevant keywords for your target area (React, Python, AWS, etc.)
         </p>
       </div>
     </div>

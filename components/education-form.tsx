@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, X } from "lucide-react"
+import { Plus, Trash2, X } from 'lucide-react'
 import type { CVData } from "@/app/page"
 
 interface EducationFormProps {
@@ -63,17 +63,17 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Educación</h3>
+        <h3 className="text-lg font-semibold">Education</h3>
         <Button onClick={addEducation} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
-          Agregar Educación
+          Add Education
         </Button>
       </div>
 
       {data.map((edu, index) => (
         <Card key={edu.id}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base">Educación {index + 1}</CardTitle>
+            <CardTitle className="text-base">Education {index + 1}</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => removeEducation(edu.id)}>
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -81,45 +81,45 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Institución *</Label>
+                <Label>Institution *</Label>
                 <Input
                   value={edu.institution}
                   onChange={(e) => updateEducation(edu.id, "institution", e.target.value)}
-                  placeholder="Universidad Politécnica de Madrid"
+                  placeholder="Stanford University"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Título *</Label>
+                <Label>Degree *</Label>
                 <Input
                   value={edu.degree}
                   onChange={(e) => updateEducation(edu.id, "degree", e.target.value)}
-                  placeholder="Grado en Ingeniería Informática"
+                  placeholder="Bachelor of Science in Computer Science"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Especialización</Label>
+                <Label>Specialization</Label>
                 <Input
                   value={edu.field}
                   onChange={(e) => updateEducation(edu.id, "field", e.target.value)}
-                  placeholder="Desarrollo de Software"
+                  placeholder="Software Development"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Ubicación</Label>
+                <Label>Location</Label>
                 <Input
                   value={edu.location}
                   onChange={(e) => updateEducation(edu.id, "location", e.target.value)}
-                  placeholder="Madrid, España"
+                  placeholder="Stanford, California"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label>Fecha Inicio</Label>
+                <Label>Start Date</Label>
                 <Input
                   type="month"
                   value={edu.startDate}
@@ -127,7 +127,7 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Fecha Fin</Label>
+                <Label>End Date</Label>
                 <Input
                   type="month"
                   value={edu.endDate}
@@ -135,17 +135,17 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Nota Media (opcional)</Label>
+                <Label>GPA (optional)</Label>
                 <Input
                   value={edu.gpa}
                   onChange={(e) => updateEducation(edu.id, "gpa", e.target.value)}
-                  placeholder="8.5/10"
+                  placeholder="3.8/4.0"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Honores y Reconocimientos</Label>
+              <Label>Honors and Awards</Label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {edu.honors.map((honor) => (
                   <Badge key={honor} variant="secondary" className="flex items-center gap-1">
@@ -158,7 +158,7 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
                 <Input
                   value={newHonor}
                   onChange={(e) => setNewHonor(e.target.value)}
-                  placeholder="Magna Cum Laude, Beca de Excelencia..."
+                  placeholder="Magna Cum Laude, Dean's List..."
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault()
@@ -174,7 +174,7 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
                     setNewHonor("")
                   }}
                 >
-                  Agregar
+                  Add
                 </Button>
               </div>
             </div>
@@ -184,7 +184,7 @@ export function EducationForm({ data, onChange }: EducationFormProps) {
 
       {data.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          No hay educación agregada. Haz clic en "Agregar Educación" para comenzar.
+          No education added. Click "Add Education" to get started.
         </div>
       )}
     </div>

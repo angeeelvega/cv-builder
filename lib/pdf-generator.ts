@@ -1,12 +1,54 @@
 import { jsPDF } from "jspdf"
 import type { CVData } from "@/app/page"
 
-export const generatePDF = async (data: CVData) => {
+const translations = {
+  en: {
+    professionalSummary: "Professional Summary",
+    professionalExperience: "Professional Experience",
+    present: "Present",
+    technologies: "Technologies:",
+    featuredProjects: "Featured Projects",
+    education: "Education",
+    specialization: "Specialization:",
+    honors: "Honors:",
+    grade: "GPA:",
+    technicalSkills: "Technical Skills",
+    programmingLanguages: "Programming Languages:",
+    frameworksLibraries: "Frameworks & Libraries:",
+    databases: "Databases:",
+    tools: "Tools:",
+    languages: "Languages:",
+    certifications: "Certifications",
+    id: "ID:"
+  },
+  es: {
+    professionalSummary: "Resumen Profesional",
+    professionalExperience: "Experiencia Profesional",
+    present: "Presente",
+    technologies: "Tecnologías:",
+    featuredProjects: "Proyectos Destacados",
+    education: "Educación",
+    specialization: "Especialización:",
+    honors: "Honores:",
+    grade: "Nota:",
+    technicalSkills: "Habilidades Técnicas",
+    programmingLanguages: "Lenguajes de Programación:",
+    frameworksLibraries: "Frameworks y Librerías:",
+    databases: "Bases de Datos:",
+    tools: "Herramientas:",
+    languages: "Idiomas:",
+    certifications: "Certificaciones",
+    id: "ID:"
+  }
+}
+
+export const generatePDF = async (data: CVData, language: 'en' | 'es' = 'en') => {
   const pdf = new jsPDF()
   const pageWidth = pdf.internal.pageSize.getWidth()
   const pageHeight = pdf.internal.pageSize.getHeight()
   const margin = 20
   let yPosition = margin
+  const t = translations[language]
 
   // Helper functions
   const addText = (text: string, x: number, y: number, options: any = {}) => {
@@ -47,15 +89,17 @@ export const generatePDF = async (data: CVData) => {
   const formatDate = (dateString: string) => {
     if (!dateString) return ""
     const [year, month] = dateString.split("-")
-    const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+    const monthNames = language === 'en' 
+      ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
     return `${monthNames[Number.parseInt(month) - 1]} ${year}`
   }
 
   // Header
   pdf.setFontSize(18)
   pdf.setFont("helvetica", "bold")
-  const nameWidth = pdf.getTextWidth(data.personalInfo.fullName || "Tu Nombre")
-  pdf.text(data.personalInfo.fullName || "Tu Nombre", (pageWidth - nameWidth) / 2, yPosition)
+  const nameWidth = pdf.getTextWidth(data.personalInfo.fullName || "Your Name")
+  pdf.text(data.personalInfo.fullName || "Your Name", (pageWidth - nameWidth) / 2, yPosition)
   yPosition += 15
 
   // Contact info
@@ -88,13 +132,13 @@ export const generatePDF = async (data: CVData) => {
 
   // Summary
   if (data.personalInfo.summary) {
-    addSection("Resumen Profesional")
+    addSection(t.professionalSummary)
     yPosition = addText(data.personalInfo.summary, margin, yPosition, { fontSize: 10 })
   }
 
   // Experience
   if (data.experience.length > 0) {
-    addSection("Experiencia Profesional")
+    addSection(t.professionalExperience)
 
     data.experience.forEach((exp) => {
       checkPageBreak(30)
@@ -109,7 +153,7 @@ export const generatePDF = async (data: CVData) => {
       yPosition = addText(exp.company, margin, yPosition, { fontSize: 10 })
 
       // Date and location
-      const dateText = `${formatDate(exp.startDate)} - ${exp.current ? "Presente" : formatDate(exp.endDate)}`
+      const dateText = `${formatDate(exp.startDate)} - ${exp.current ? t.present : formatDate(exp.endDate)}`
       const locationText = exp.location ? ` | ${exp.location}` : ""
       const rightText = dateText + locationText
 
@@ -128,7 +172,7 @@ export const generatePDF = async (data: CVData) => {
       // Technologies
       if (exp.technologies.length > 0) {
         yPosition += 2
-        const techText = `Tecnologías: ${exp.technologies.join(", ")}`
+        const techText = `${t.technologies} ${exp.technologies.join(", ")}`
         yPosition = addText(techText, margin + 5, yPosition, { fontSize: 9 })
       }
 
@@ -138,7 +182,7 @@ export const generatePDF = async (data: CVData) => {
 
   // Projects
   if (data.projects.length > 0) {
-    addSection("Proyectos Destacados")
+    addSection(t.featuredProjects)
 
     data.projects.forEach((project) => {
       checkPageBreak(25)
@@ -164,7 +208,7 @@ export const generatePDF = async (data: CVData) => {
       // Technologies
       if (project.technologies.length > 0) {
         yPosition += 2
-        const techText = `Tecnologías: ${project.technologies.join(", ")}`
+        const techText = `${t.technologies} ${project.technologies.join(", ")}`
         yPosition = addText(techText, margin + 5, yPosition, { fontSize: 9 })
       }
 
@@ -185,7 +229,7 @@ export const generatePDF = async (data: CVData) => {
 
   // Education
   if (data.education.length > 0) {
-    addSection("Educación")
+    addSection(t.education)
 
     data.education.forEach((edu) => {
       checkPageBreak(20)
@@ -201,18 +245,18 @@ export const generatePDF = async (data: CVData) => {
       // Date and location
       const dateText = `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`
       const locationText = edu.location ? ` | ${edu.location}` : ""
-      const gpaText = edu.gpa ? ` | Nota: ${edu.gpa}` : ""
+      const gpaText = edu.gpa ? ` | ${t.grade} ${edu.gpa}` : ""
       const rightText = dateText + locationText + gpaText
 
       pdf.text(rightText, pageWidth - margin - pdf.getTextWidth(rightText), yPosition - 10)
 
       if (edu.field) {
-        yPosition = addText(`Especialización: ${edu.field}`, margin + 5, yPosition, { fontSize: 9 })
+        yPosition = addText(`${t.specialization} ${edu.field}`, margin + 5, yPosition, { fontSize: 9 })
       }
 
       if (edu.honors.length > 0) {
         yPosition += 2
-        const honorsText = `Honores: ${edu.honors.join(", ")}`
+        const honorsText = `${t.honors} ${edu.honors.join(", ")}`
         yPosition = addText(honorsText, margin + 5, yPosition, { fontSize: 9 })
       }
 
@@ -221,20 +265,20 @@ export const generatePDF = async (data: CVData) => {
   }
 
   // Skills
-  addSection("Habilidades Técnicas")
+  addSection(t.technicalSkills)
 
   const skillCategories = [
-    { label: "Lenguajes de Programación", skills: data.skills.technical },
-    { label: "Frameworks y Librerías", skills: data.skills.frameworks },
-    { label: "Bases de Datos", skills: data.skills.databases },
-    { label: "Herramientas", skills: data.skills.tools },
-    { label: "Idiomas", skills: data.skills.languages },
+    { label: t.programmingLanguages, skills: data.skills.technical },
+    { label: t.frameworksLibraries, skills: data.skills.frameworks },
+    { label: t.databases, skills: data.skills.databases },
+    { label: t.tools, skills: data.skills.tools },
+    { label: t.languages, skills: data.skills.languages },
   ]
 
   skillCategories.forEach(({ label, skills }) => {
     if (skills.length > 0) {
       checkPageBreak(10)
-      const skillText = `${label}: ${skills.join(", ")}`
+      const skillText = `${label} ${skills.join(", ")}`
       yPosition = addText(skillText, margin, yPosition, { fontSize: 9 })
       yPosition += 2
     }
@@ -242,7 +286,7 @@ export const generatePDF = async (data: CVData) => {
 
   // Certifications
   if (data.certifications.length > 0) {
-    addSection("Certificaciones")
+    addSection(t.certifications)
 
     data.certifications.forEach((cert) => {
       checkPageBreak(15)
@@ -257,7 +301,7 @@ export const generatePDF = async (data: CVData) => {
 
       // Date and credential
       const dateText = cert.date ? formatDate(cert.date) : ""
-      const credText = cert.credentialId ? ` | ID: ${cert.credentialId}` : ""
+      const credText = cert.credentialId ? ` | ${t.id} ${cert.credentialId}` : ""
       const rightText = dateText + credText
 
       if (rightText.trim()) {
@@ -269,6 +313,7 @@ export const generatePDF = async (data: CVData) => {
   }
 
   // Save the PDF
-  const fileName = `CV_${data.personalInfo.fullName?.replace(/\s+/g, "_") || "CV"}.pdf`
+  const langSuffix = language === 'es' ? '_ES' : '_EN'
+  const fileName = `CV_${data.personalInfo.fullName?.replace(/\s+/g, "_") || "CV"}${langSuffix}.pdf`
   pdf.save(fileName)
 }

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Download, Eye, FileText } from "lucide-react"
+import { Download, Eye, FileText, Languages } from 'lucide-react'
 import { PersonalInfoForm } from "@/components/personal-info-form"
 import { ExperienceForm } from "@/components/experience-form"
 import { EducationForm } from "@/components/education-form"
@@ -103,6 +103,7 @@ export default function CVBuilder() {
   const [cvData, setCvData] = useState<CVData>(initialData)
   const [activeTab, setActiveTab] = useState("personal")
   const [showPreview, setShowPreview] = useState(false)
+  const [previewLanguage, setPreviewLanguage] = useState<'en' | 'es'>('en')
 
   const updateCVData = (section: keyof CVData, data: any) => {
     setCvData((prev) => ({
@@ -111,11 +112,23 @@ export default function CVBuilder() {
     }))
   }
 
-  const handleExportPDF = async () => {
+  const handleExportPDF = async (language: 'en' | 'es' = 'en') => {
     try {
-      await generatePDF(cvData)
+      await generatePDF(cvData, language)
     } catch (error) {
       console.error("Error generating PDF:", error)
+    }
+  }
+
+  const handleExportBoth = async () => {
+    try {
+      await generatePDF(cvData, 'en')
+      // Small delay to avoid conflicts
+      setTimeout(async () => {
+        await generatePDF(cvData, 'es')
+      }, 1000)
+    } catch (error) {
+      console.error("Error generating PDFs:", error)
     }
   }
 
@@ -123,8 +136,8 @@ export default function CVBuilder() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">CV Builder Pro</h1>
-          <p className="text-lg text-gray-600">Crea tu CV profesional optimizado para ATS y orientado a tecnología</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Professional CV Builder</h1>
+          <p className="text-lg text-gray-600">Create your professional CV optimized for ATS and tech-oriented</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -134,7 +147,7 @@ export default function CVBuilder() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5" />
-                  Información del CV
+                  CV Information
                 </CardTitle>
                 <div className="flex gap-2">
                   <Button
@@ -143,11 +156,19 @@ export default function CVBuilder() {
                     className="flex items-center gap-2"
                   >
                     <Eye className="h-4 w-4" />
-                    {showPreview ? "Ocultar" : "Vista Previa"}
+                    {showPreview ? "Hide" : "Preview"}
                   </Button>
-                  <Button onClick={handleExportPDF} className="flex items-center gap-2">
+                  <Button onClick={() => handleExportPDF('en')} variant="outline" className="flex items-center gap-2">
                     <Download className="h-4 w-4" />
-                    Exportar PDF
+                    Export EN
+                  </Button>
+                  <Button onClick={() => handleExportPDF('es')} variant="outline" className="flex items-center gap-2">
+                    <Download className="h-4 w-4" />
+                    Export ES
+                  </Button>
+                  <Button onClick={handleExportBoth} className="flex items-center gap-2">
+                    <Languages className="h-4 w-4" />
+                    Export Both
                   </Button>
                 </div>
               </CardHeader>
@@ -155,11 +176,11 @@ export default function CVBuilder() {
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
                   <TabsList className="grid w-full grid-cols-6">
                     <TabsTrigger value="personal">Personal</TabsTrigger>
-                    <TabsTrigger value="experience">Experiencia</TabsTrigger>
-                    <TabsTrigger value="education">Educación</TabsTrigger>
+                    <TabsTrigger value="experience">Experience</TabsTrigger>
+                    <TabsTrigger value="education">Education</TabsTrigger>
                     <TabsTrigger value="skills">Skills</TabsTrigger>
-                    <TabsTrigger value="projects">Proyectos</TabsTrigger>
-                    <TabsTrigger value="certifications">Certificaciones</TabsTrigger>
+                    <TabsTrigger value="projects">Projects</TabsTrigger>
+                    <TabsTrigger value="certifications">Certifications</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="personal" className="mt-6">
@@ -200,11 +221,27 @@ export default function CVBuilder() {
           <div className="lg:col-span-1">
             {showPreview && (
               <Card className="sticky top-4">
-                <CardHeader>
-                  <CardTitle>Vista Previa</CardTitle>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Preview</CardTitle>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={previewLanguage === 'en' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setPreviewLanguage('en')}
+                    >
+                      EN
+                    </Button>
+                    <Button
+                      variant={previewLanguage === 'es' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setPreviewLanguage('es')}
+                    >
+                      ES
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <CVPreview data={cvData} />
+                  <CVPreview data={cvData} language={previewLanguage} />
                 </CardContent>
               </Card>
             )}

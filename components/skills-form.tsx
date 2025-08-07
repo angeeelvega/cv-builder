@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { X } from "lucide-react"
+import { X } from 'lucide-react'
 import type { CVData } from "@/app/page"
 
 interface SkillsFormProps {
@@ -26,12 +26,12 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
   })
 
   const skillCategories = [
-    { key: "technical", label: "Lenguajes de Programación", placeholder: "JavaScript, Python, Java, TypeScript..." },
-    { key: "frameworks", label: "Frameworks y Librerías", placeholder: "React, Node.js, Django, Spring..." },
-    { key: "databases", label: "Bases de Datos", placeholder: "PostgreSQL, MongoDB, Redis, MySQL..." },
-    { key: "tools", label: "Herramientas y Tecnologías", placeholder: "Docker, AWS, Git, Jenkins..." },
-    { key: "languages", label: "Idiomas", placeholder: "Español (Nativo), Inglés (Avanzado)..." },
-    { key: "soft", label: "Habilidades Blandas", placeholder: "Liderazgo, Trabajo en equipo, Comunicación..." },
+    { key: "technical", label: "Programming Languages", placeholder: "JavaScript, Python, Java, TypeScript..." },
+    { key: "frameworks", label: "Frameworks and Libraries", placeholder: "React, Node.js, Django, Spring..." },
+    { key: "databases", label: "Databases", placeholder: "PostgreSQL, MongoDB, Redis, MySQL..." },
+    { key: "tools", label: "Tools and Technologies", placeholder: "Docker, AWS, Git, Jenkins..." },
+    { key: "languages", label: "Languages", placeholder: "English (Native), Spanish (Advanced)..." },
+    { key: "soft", label: "Soft Skills", placeholder: "Leadership, Teamwork, Communication..." },
   ]
 
   const addSkill = (category: keyof CVData["skills"], skill: string) => {
@@ -60,7 +60,7 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold">Habilidades y Competencias</h3>
+      <h3 className="text-lg font-semibold">Skills and Competencies</h3>
 
       {skillCategories.map(({ key, label, placeholder }) => (
         <Card key={key}>
@@ -102,7 +102,7 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
               </Button>
             </div>
             {key === "technical" && (
-              <p className="text-sm text-gray-500">Incluye los lenguajes más relevantes para tu área objetivo</p>
+              <p className="text-sm text-gray-500">Include the most relevant languages for your target area</p>
             )}
           </CardContent>
         </Card>
